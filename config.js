@@ -5,5 +5,5 @@ window.LADO_A_LADO = {
   API: 'https://script.google.com/macros/s/AKfycby46XWLWR377Z8W-cd0evqx7UJjBM6dhXSZY77aMBjQz2GBK3PvdwQX5ue5n4ofld0a/exec',
   // Contato mostrado quando algo dá errado ou o CNPJ não é encontrado. Deixe '' para não mostrar.
   EMAIL: 'assessorialadoalado@gmail.com',
-  WHATSAPP: ''   // só números, com 55 e DDD. Exemplo: 5527999990000
+  WHATSAPP: '5527999712727'   // só números, com 55 e DDD. Exemplo: 5527999990000
 };
