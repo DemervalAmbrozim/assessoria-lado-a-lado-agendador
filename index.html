@@ -21,22 +21,27 @@
   html { -webkit-text-size-adjust: 100%; }
   body { margin: 0; background: var(--creme); color: var(--texto); font: 16px/1.55 "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif; }
   h1, h2, .titulo { font-family: Montserrat, "Segoe UI", system-ui, sans-serif; color: var(--azul); line-height: 1.25; margin: 0; }
-  header.topo { background: var(--creme); text-align: center; padding: 18px 16px 0; }
-  header.topo img { width: min(340px, 82vw); height: auto; display: inline-block; }
-  main { max-width: 680px; margin: 0 auto; padding: 8px 16px 40px; }
-  .intro { text-align: center; margin: 8px 0 22px; }
-  .intro h1 { font-size: clamp(1.35rem, 4.6vw, 1.75rem); margin-bottom: 10px; }
-  .intro p { margin: 0 auto 10px; max-width: 34em; color: var(--texto); }
+  header.topo { background: var(--creme); text-align: center; padding: 12px 16px 0; }
+  header.topo img { width: min(260px, 66vw); height: auto; display: inline-block; }
+  main { max-width: 860px; margin: 0 auto; padding: 6px 16px 32px; }
+  .intro { text-align: center; margin: 6px 0 16px; }
+  .intro h1 { font-size: clamp(1.3rem, 4.2vw, 1.65rem); margin-bottom: 6px; }
+  .intro p { margin: 0 auto 8px; max-width: 34em; color: var(--texto); }
   .intro .destaque { font-weight: 600; color: var(--azul); }
-  .passos { display: flex; gap: 8px; list-style: none; padding: 0; margin: 0 0 16px; }
+  .passos { display: flex; gap: 8px; list-style: none; padding: 0; margin: 0 0 14px; }
   .passos li { flex: 1; text-align: center; font-size: .82rem; color: var(--suave); border-top: 4px solid var(--linha); padding-top: 6px; }
   .passos li[aria-current="step"] { color: var(--azul); font-weight: 600; border-top-color: var(--dourado); }
   .passos li.feito { color: var(--azul); border-top-color: var(--azul); }
-  .cartao { background: var(--papel); border: 1px solid var(--linha); border-radius: 14px; padding: 20px 18px; box-shadow: 0 1px 2px rgba(2,34,81,.06); }
+  .cartao { background: var(--papel); border: 1px solid var(--linha); border-radius: 14px; padding: 18px; box-shadow: 0 1px 2px rgba(2,34,81,.06); }
   .cartao h2 { font-size: 1.15rem; margin-bottom: 4px; }
   .cartao h2:focus { outline: none; }
-  .sub { margin: 0 0 16px; color: var(--suave); font-size: .95rem; }
-  .campo { margin-bottom: 16px; }
+  .sub { margin: 0 0 14px; color: var(--suave); font-size: .95rem; }
+  .campo { margin-bottom: 14px; }
+  .linha2 { display: block; }
+  @media (min-width: 600px) {
+    .linha2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; }
+    .linha2 .campo { margin-bottom: 14px; }
+  }
   label, .rotulo { display: block; font-weight: 600; margin-bottom: 6px; color: var(--azul); }
   input[type=text], input[type=email], input[type=tel] {
     width: 100%; font: inherit; color: var(--texto); background: #fff; border: 1.5px solid #b9b39c; border-radius: 10px; padding: 12px 14px; min-height: 48px;
@@ -62,10 +67,10 @@
   button.principal:hover:not(:disabled) { background: var(--azul-2); }
   button:disabled { opacity: .55; cursor: not-allowed; }
   button.pequeno { min-height: 40px; padding: 6px 14px; font-size: .92rem; }
-  .barra { display: flex; gap: 10px; justify-content: space-between; flex-wrap: wrap; margin-top: 20px; }
+  .barra { display: flex; gap: 10px; justify-content: space-between; flex-wrap: wrap; margin-top: 16px; }
   .barra .principal { flex: 1 1 220px; }
-  .dias, .horas { display: grid; gap: 8px; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); margin: 6px 0 14px; }
-  .dias button, .horas button { padding: 8px 6px; min-height: 52px; line-height: 1.25; font-weight: 500; }
+  .dias, .horas { display: grid; gap: 6px; grid-template-columns: repeat(auto-fill, minmax(88px, 1fr)); margin: 6px 0 12px; }
+  .dias button, .horas button { padding: 6px 6px; min-height: 46px; line-height: 1.2; font-weight: 500; }
   .dias button small { display: block; font-size: .78rem; color: var(--suave); }
   .dias button[aria-pressed="true"], .horas button[aria-pressed="true"] { background: var(--azul); color: #fff; border-color: var(--azul); }
   .dias button[aria-pressed="true"] small { color: #d7deee; }
@@ -112,27 +117,31 @@
     <h2 id="t1" tabindex="-1">Sobre você e a sua empresa</h2>
     <p class="sub">Leva menos de um minuto.</p>
     <form id="form1" novalidate autocomplete="on">
-      <div class="campo">
-        <label for="nome">Seu nome</label>
-        <input type="text" id="nome" name="nome" autocomplete="name" required aria-describedby="erro-nome">
-        <p class="erro" id="erro-nome" role="alert"></p>
+      <div class="linha2">
+        <div class="campo">
+          <label for="nome">Seu nome</label>
+          <input type="text" id="nome" name="nome" autocomplete="name" required aria-describedby="erro-nome">
+          <p class="erro" id="erro-nome" role="alert"></p>
+        </div>
+        <div class="campo">
+          <label for="email">E-mail</label>
+          <input type="email" id="email" name="email" autocomplete="email" inputmode="email" required aria-describedby="erro-email">
+          <p class="erro" id="erro-email" role="alert"></p>
+        </div>
       </div>
-      <div class="campo">
-        <label for="email">E-mail</label>
-        <input type="email" id="email" name="email" autocomplete="email" inputmode="email" required aria-describedby="erro-email">
-        <p class="erro" id="erro-email" role="alert"></p>
-      </div>
-      <div class="campo">
-        <label for="whatsapp">WhatsApp (com DDD)</label>
-        <input type="tel" id="whatsapp" name="whatsapp" autocomplete="tel-national" inputmode="tel" placeholder="(27) 99999-0000" required aria-describedby="erro-whatsapp">
-        <p class="erro" id="erro-whatsapp" role="alert"></p>
-      </div>
-      <div class="campo">
-        <label for="cnpj">CNPJ da empresa</label>
-        <input type="text" id="cnpj" name="cnpj" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="00.000.000/0000-00" maxlength="18" required aria-describedby="ajuda-cnpj resultado-cnpj">
-        <p class="ajuda" id="ajuda-cnpj">Conferimos o número na hora, na Receita Federal.</p>
-        <div id="resultado-cnpj" aria-live="polite"></div>
-        <p class="erro" id="erro-cnpj" role="alert"></p>
+      <div class="linha2">
+        <div class="campo">
+          <label for="whatsapp">WhatsApp (com DDD)</label>
+          <input type="tel" id="whatsapp" name="whatsapp" autocomplete="tel-national" inputmode="tel" placeholder="(27) 99999-0000" required aria-describedby="erro-whatsapp">
+          <p class="erro" id="erro-whatsapp" role="alert"></p>
+        </div>
+        <div class="campo">
+          <label for="cnpj">CNPJ da empresa</label>
+          <input type="text" id="cnpj" name="cnpj" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="00.000.000/0000-00" maxlength="18" required aria-describedby="ajuda-cnpj resultado-cnpj">
+          <p class="ajuda" id="ajuda-cnpj">Conferimos o número na hora, na Receita Federal.</p>
+          <div id="resultado-cnpj" aria-live="polite"></div>
+          <p class="erro" id="erro-cnpj" role="alert"></p>
+        </div>
       </div>
       <div class="campo" role="radiogroup" aria-labelledby="rot-grupo" aria-describedby="erro-grupo">
         <span class="rotulo" id="rot-grupo">Há outras empresas do mesmo grupo?</span>
