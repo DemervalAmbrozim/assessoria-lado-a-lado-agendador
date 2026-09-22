@@ -91,8 +91,10 @@
   <section class="intro">
     <h1>Vamos marcar a nossa primeira conversa</h1>
     <p class="destaque">O primeiro passo não precisa ser grande. Precisa fazer sentido.</p>
-    <p>Vamos nos encontrar na sua empresa, entender a sua história, respeitar a sua cultura e o momento do seu negócio, e ver como podemos ajudar, lado a lado, a fortalecer o seu negócio hoje, com autonomia para o amanhã.</p>
-    <p>A Assessoria Lado a Lado tem o propósito de apoiar empresas, seus líderes e suas equipes, em todos os níveis, na evolução da gestão, entendendo a realidade, a cultura e as suas necessidades, atuando lado a lado na construção dos caminhos necessários. Compartilhamos nossa experiência prática e, em conjunto, buscamos soluções que façam sentido, promovam melhorias e gerem resultados.</p>
+    <div id="introExtra">
+      <p>Vamos nos encontrar na sua empresa, entender a sua história, respeitar a sua cultura e o momento do seu negócio, e ver como podemos ajudar, lado a lado, a fortalecer o seu negócio hoje, com autonomia para o amanhã.</p>
+      <p>A Assessoria Lado a Lado tem o propósito de apoiar empresas, seus líderes e suas equipes, em todos os níveis, na evolução da gestão, entendendo a realidade, a cultura e as suas necessidades, atuando lado a lado na construção dos caminhos necessários. Compartilhamos nossa experiência prática e, em conjunto, buscamos soluções que façam sentido, promovam melhorias e gerem resultados.</p>
+    </div>
   </section>
 
   <noscript><div class="caixa aviso">Esta página precisa do JavaScript ligado para funcionar. Se preferir, fale conosco por e-mail.</div></noscript>
@@ -268,6 +270,7 @@
       p.classList.toggle('feito', i < n);
       if (i === n) p.setAttribute('aria-current', 'step'); else p.removeAttribute('aria-current');
     });
+    $('introExtra').hidden = n !== 1;
     var titulo = $('t' + n); if (titulo) { titulo.focus({ preventScroll: true }); }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
