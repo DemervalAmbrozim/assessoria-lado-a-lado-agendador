@@ -1,0 +1,472 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Primeira conversa — Assessoria Lado a Lado</title>
+<meta name="description" content="Agende a primeira conversa com a Assessoria Lado a Lado.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#022251">
+<link rel="icon" href="icone.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --azul: #022251; --azul-2: #0B2A4A; --dourado: #D69A22; --creme: #FBFAF5; --papel: #ffffff;
+    --texto: #1b2436; --suave: #56607a; --linha: #d9d4c3; --ok: #1f6b3a; --ok-fundo: #eaf5ee; --erro: #a12a1f; --erro-fundo: #fbeceb;
+    --aviso: #7a5200; --aviso-fundo: #fdf4dd;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; background: var(--creme); color: var(--texto); font: 16px/1.55 "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif; }
+  h1, h2, .titulo { font-family: Montserrat, "Segoe UI", system-ui, sans-serif; color: var(--azul); line-height: 1.25; margin: 0; }
+  header.topo { background: var(--creme); text-align: center; padding: 18px 16px 0; }
+  header.topo img { width: min(340px, 82vw); height: auto; display: inline-block; }
+  main { max-width: 680px; margin: 0 auto; padding: 8px 16px 40px; }
+  .intro { text-align: center; margin: 8px 0 22px; }
+  .intro h1 { font-size: clamp(1.35rem, 4.6vw, 1.75rem); margin-bottom: 10px; }
+  .intro p { margin: 0 auto 10px; max-width: 34em; color: var(--texto); }
+  .intro .destaque { font-weight: 600; color: var(--azul); }
+  .passos { display: flex; gap: 8px; list-style: none; padding: 0; margin: 0 0 16px; }
+  .passos li { flex: 1; text-align: center; font-size: .82rem; color: var(--suave); border-top: 4px solid var(--linha); padding-top: 6px; }
+  .passos li[aria-current="step"] { color: var(--azul); font-weight: 600; border-top-color: var(--dourado); }
+  .passos li.feito { color: var(--azul); border-top-color: var(--azul); }
+  .cartao { background: var(--papel); border: 1px solid var(--linha); border-radius: 14px; padding: 20px 18px; box-shadow: 0 1px 2px rgba(2,34,81,.06); }
+  .cartao h2 { font-size: 1.15rem; margin-bottom: 4px; }
+  .cartao h2:focus { outline: none; }
+  .sub { margin: 0 0 16px; color: var(--suave); font-size: .95rem; }
+  .campo { margin-bottom: 16px; }
+  label, .rotulo { display: block; font-weight: 600; margin-bottom: 6px; color: var(--azul); }
+  input[type=text], input[type=email], input[type=tel] {
+    width: 100%; font: inherit; color: var(--texto); background: #fff; border: 1.5px solid #b9b39c; border-radius: 10px; padding: 12px 14px; min-height: 48px;
+  }
+  input:focus-visible, button:focus-visible { outline: 3px solid var(--dourado); outline-offset: 2px; }
+  input[aria-invalid="true"] { border-color: var(--erro); }
+  .ajuda { font-size: .88rem; color: var(--suave); margin: 6px 0 0; }
+  .erro { color: var(--erro); font-size: .92rem; margin: 6px 0 0; }
+  .erro:empty { display: none; }
+  .opcoes { display: flex; gap: 10px; }
+  .opcoes label { flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; margin: 0; border: 1.5px solid #b9b39c; border-radius: 10px; background: #fff; cursor: pointer; font-weight: 500; color: var(--texto); }
+  .opcoes input { accent-color: var(--azul); width: 18px; height: 18px; }
+  .opcoes label:has(input:checked) { border-color: var(--azul); background: #eef2fa; font-weight: 600; }
+  .caixa { border-radius: 10px; padding: 12px 14px; margin-top: 10px; font-size: .95rem; }
+  .caixa.info { background: #eef2fa; color: var(--azul); }
+  .caixa.ok { background: var(--ok-fundo); color: var(--ok); }
+  .caixa.erro { background: var(--erro-fundo); color: var(--erro); }
+  .caixa.aviso { background: var(--aviso-fundo); color: var(--aviso); }
+  .caixa strong { display: block; }
+  .caixa .acoes { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+  button { font: inherit; cursor: pointer; border-radius: 10px; min-height: 48px; padding: 10px 18px; border: 1.5px solid var(--azul); background: #fff; color: var(--azul); font-weight: 600; }
+  button.principal { background: var(--azul); color: #fff; }
+  button.principal:hover:not(:disabled) { background: var(--azul-2); }
+  button:disabled { opacity: .55; cursor: not-allowed; }
+  button.pequeno { min-height: 40px; padding: 6px 14px; font-size: .92rem; }
+  .barra { display: flex; gap: 10px; justify-content: space-between; flex-wrap: wrap; margin-top: 20px; }
+  .barra .principal { flex: 1 1 220px; }
+  .dias, .horas { display: grid; gap: 8px; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); margin: 6px 0 14px; }
+  .dias button, .horas button { padding: 8px 6px; min-height: 52px; line-height: 1.25; font-weight: 500; }
+  .dias button small { display: block; font-size: .78rem; color: var(--suave); }
+  .dias button[aria-pressed="true"], .horas button[aria-pressed="true"] { background: var(--azul); color: #fff; border-color: var(--azul); }
+  .dias button[aria-pressed="true"] small { color: #d7deee; }
+  .resumo { background: var(--creme); border: 1px solid var(--linha); border-radius: 10px; padding: 12px 14px; margin: 14px 0 0; }
+  .resumo p { margin: 0; }
+  .aviso-dados { font-size: .85rem; color: var(--suave); margin: 14px 0 0; text-align: center; }
+  .contato { font-size: .92rem; color: var(--suave); margin-top: 18px; text-align: center; }
+  .contato a { color: var(--azul); font-weight: 600; }
+  .sucesso { text-align: center; }
+  .sucesso .selo { width: 56px; height: 56px; border-radius: 50%; background: var(--ok-fundo); color: var(--ok); display: grid; place-items: center; margin: 0 auto 12px; font-size: 1.8rem; }
+  .sucesso .quando { font-family: Montserrat, "Segoe UI", sans-serif; font-weight: 600; color: var(--azul); font-size: 1.1rem; margin: 10px 0; }
+  .oculto-robo { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  [hidden] { display: none !important; }
+  @media (prefers-reduced-motion: no-preference) { button { transition: background .15s, color .15s; } }
+</style>
+</head>
+<body>
+<header class="topo">
+  <img src="logo.png" alt="Assessoria Lado a Lado" width="340" height="85">
+</header>
+
+<main>
+  <section class="intro">
+    <h1>Vamos marcar a nossa primeira conversa</h1>
+    <p class="destaque">O primeiro passo não precisa ser grande. Precisa fazer sentido.</p>
+    <p>Vamos nos encontrar na sua empresa, entender a sua história, respeitar a sua cultura e o momento do seu negócio, e ver como podemos ajudar, lado a lado, a fortalecer o seu negócio hoje, com autonomia para o amanhã.</p>
+  </section>
+
+  <noscript><div class="caixa aviso">Esta página precisa do JavaScript ligado para funcionar. Se preferir, fale conosco por e-mail.</div></noscript>
+
+  <ol class="passos" id="passos" aria-label="Etapas">
+    <li id="p1" aria-current="step">1. A sua empresa</li>
+    <li id="p2">2. Dia e horário</li>
+    <li id="p3">3. Confirmado</li>
+  </ol>
+
+  <div id="mensagem-geral" role="status" aria-live="polite"></div>
+
+  <!-- Etapa 1 -->
+  <section class="cartao" id="etapa1" aria-labelledby="t1">
+    <h2 id="t1" tabindex="-1">Sobre você e a sua empresa</h2>
+    <p class="sub">Leva menos de um minuto.</p>
+    <form id="form1" novalidate autocomplete="on">
+      <div class="campo">
+        <label for="nome">Seu nome</label>
+        <input type="text" id="nome" name="nome" autocomplete="name" required aria-describedby="erro-nome">
+        <p class="erro" id="erro-nome" role="alert"></p>
+      </div>
+      <div class="campo">
+        <label for="email">E-mail</label>
+        <input type="email" id="email" name="email" autocomplete="email" inputmode="email" required aria-describedby="erro-email">
+        <p class="erro" id="erro-email" role="alert"></p>
+      </div>
+      <div class="campo">
+        <label for="whatsapp">WhatsApp (com DDD)</label>
+        <input type="tel" id="whatsapp" name="whatsapp" autocomplete="tel-national" inputmode="tel" placeholder="(27) 99999-0000" required aria-describedby="erro-whatsapp">
+        <p class="erro" id="erro-whatsapp" role="alert"></p>
+      </div>
+      <div class="campo">
+        <label for="cnpj">CNPJ da empresa</label>
+        <input type="text" id="cnpj" name="cnpj" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="00.000.000/0000-00" maxlength="18" required aria-describedby="ajuda-cnpj resultado-cnpj">
+        <p class="ajuda" id="ajuda-cnpj">Conferimos o número na hora, na Receita Federal.</p>
+        <div id="resultado-cnpj" aria-live="polite"></div>
+        <p class="erro" id="erro-cnpj" role="alert"></p>
+      </div>
+      <div class="campo" role="radiogroup" aria-labelledby="rot-grupo" aria-describedby="erro-grupo">
+        <span class="rotulo" id="rot-grupo">Há outras empresas do mesmo grupo?</span>
+        <div class="opcoes">
+          <label><input type="radio" name="grupo" value="Sim"> Sim</label>
+          <label><input type="radio" name="grupo" value="Não"> Não</label>
+        </div>
+        <p class="erro" id="erro-grupo" role="alert"></p>
+      </div>
+      <div class="oculto-robo" aria-hidden="true">
+        <label for="empresa_site">Deixe este campo em branco</label>
+        <input type="text" id="empresa_site" name="empresa_site" tabindex="-1" autocomplete="off">
+      </div>
+      <div class="barra"><button type="submit" class="principal" id="continuar">Continuar</button></div>
+    </form>
+  </section>
+
+  <!-- Etapa 2 -->
+  <section class="cartao" id="etapa2" aria-labelledby="t2" hidden>
+    <h2 id="t2" tabindex="-1">Escolha o dia e o horário</h2>
+    <p class="sub">A conversa dura cerca de 2 horas e acontece na sua empresa. Os horários são os de Brasília.</p>
+    <div id="area-horarios" aria-live="polite"><div class="caixa info">Buscando os horários livres…</div></div>
+    <div class="resumo" id="resumo" hidden><p id="resumo-texto"></p></div>
+    <p class="erro" id="erro-reserva" role="alert"></p>
+    <div class="barra">
+      <button type="button" id="voltar">Voltar</button>
+      <button type="button" class="principal" id="confirmar" disabled>Confirmar a nossa conversa</button>
+    </div>
+    <p class="aviso-dados">Usamos estes dados só para confirmar a reunião e manter contato.</p>
+  </section>
+
+  <!-- Etapa 3 -->
+  <section class="cartao sucesso" id="etapa3" aria-labelledby="t3" hidden>
+    <div class="selo" aria-hidden="true">✓</div>
+    <h2 id="t3" tabindex="-1">Tudo certo, <span id="ok-nome"></span>!</h2>
+    <p class="quando" id="ok-quando"></p>
+    <p>Vamos nos encontrar na sua empresa. Combinamos o endereço e os detalhes pelo WhatsApp.</p>
+    <p class="sub">Enviamos a confirmação para <strong id="ok-email"></strong>. Se não a encontrar, olhe também a caixa de spam.</p>
+  </section>
+
+  <p class="contato" id="contato" hidden></p>
+</main>
+
+<script src="config.js"></script>
+<script>
+(function () {
+  'use strict';
+  var CFG = window.LADO_A_LADO || {};
+  var $ = function (id) { return document.getElementById(id); };
+
+  /* ---------- CNPJ (aceita também o CNPJ alfanumérico, adotado a partir de julho de 2026) ---------- */
+  function limparCnpj(s) { return String(s || '').toUpperCase().replace(/[^A-Z0-9]/g, ''); }
+  function digitosCnpj(base12) {
+    function calc(base, pesos) {
+      var soma = 0;
+      for (var i = 0; i < base.length; i++) soma += (base.charCodeAt(i) - 48) * pesos[i];
+      var resto = soma % 11;
+      return resto < 2 ? 0 : 11 - resto;
+    }
+    var d1 = calc(base12, [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2]);
+    var d2 = calc(base12 + d1, [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2]);
+    return '' + d1 + d2;
+  }
+  function validarCnpj(c) {
+    if (!/^[A-Z0-9]{12}[0-9]{2}$/.test(c)) return false;
+    if (/^(.)\1{13}$/.test(c)) return false;
+    return digitosCnpj(c.substr(0, 12)) === c.substr(12, 2);
+  }
+  function mascaraCnpj(c) {
+    var s = '';
+    for (var i = 0; i < c.length; i++) {
+      if (i === 2 || i === 5) s += '.';
+      if (i === 8) s += '/';
+      if (i === 12) s += '-';
+      s += c.charAt(i);
+    }
+    return s;
+  }
+  function mascaraTelefone(txt) {
+    var d = String(txt || '').replace(/\D/g, '');
+    if (d.length > 11 && d.indexOf('55') === 0) d = d.substr(2);
+    d = d.substr(0, 11);
+    if (d.length <= 2) return d ? '(' + d : '';
+    if (d.length <= 6) return '(' + d.substr(0, 2) + ') ' + d.substr(2);
+    if (d.length <= 10) return '(' + d.substr(0, 2) + ') ' + d.substr(2, 4) + '-' + d.substr(6);
+    return '(' + d.substr(0, 2) + ') ' + d.substr(2, 5) + '-' + d.substr(7);
+  }
+  function telefoneValido(txt) { var d = String(txt || '').replace(/\D/g, ''); if (d.length > 11 && d.indexOf('55') === 0) d = d.substr(2); return d.length === 10 || d.length === 11; }
+  function emailValido(s) { return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(s || '').trim()); }
+
+  /* ---------- Datas ---------- */
+  var SEMANA = ['domingo', 'segunda-feira', 'terça-feira', 'quarta-feira', 'quinta-feira', 'sexta-feira', 'sábado'];
+  var SEMANA_CURTA = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'];
+  var MESES = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
+  function partesData(iso) { var p = iso.split('-'); var d = new Date(Date.UTC(+p[0], +p[1] - 1, +p[2], 12)); return { dia: p[2], mes: p[1], sem: d.getUTCDay(), nomeMes: MESES[+p[1] - 1], diaNum: +p[2] }; }
+  function dataLonga(iso) { var p = partesData(iso); return SEMANA[p.sem].charAt(0).toUpperCase() + SEMANA[p.sem].slice(1) + ', ' + p.diaNum + ' de ' + p.nomeMes; }
+
+  /* ---------- Estado ---------- */
+  var estado = { cnpj: { estado: 'vazio', confirmado: false, dados: null }, dias: null, dia: null, hora: null, enviando: false };
+  var tokenConsulta = 0;
+
+  /* ---------- Conversa com o script ---------- */
+  function apiPronta() { return CFG.API && !/COLE_AQUI/.test(CFG.API); }
+  function chamar(params, corpo) {
+    var url = CFG.API + (CFG.API.indexOf('?') < 0 ? '?' : '&') + new URLSearchParams(params).toString();
+    var ctrl = new AbortController();
+    var limite = setTimeout(function () { ctrl.abort(); }, corpo ? 90000 : 30000);
+    var opcoes = corpo
+      ? { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(corpo), signal: ctrl.signal, redirect: 'follow' }
+      : { signal: ctrl.signal, redirect: 'follow' };
+    return Promise.resolve().then(function () { return fetch(url, opcoes); }).then(function (r) { return r.json(); }).then(function (j) { clearTimeout(limite); return j; }, function (e) { clearTimeout(limite); throw e; });
+  }
+
+  /* ---------- Contato ---------- */
+  function montarContato() {
+    var partes = [];
+    if (CFG.WHATSAPP) partes.push('<a href="https://wa.me/' + CFG.WHATSAPP.replace(/\D/g, '') + '">WhatsApp</a>');
+    if (CFG.EMAIL) partes.push('<a href="mailto:' + CFG.EMAIL + '">' + CFG.EMAIL + '</a>');
+    var el = $('contato');
+    if (partes.length) { el.innerHTML = 'Precisa de ajuda? Fale conosco: ' + partes.join(' · '); el.hidden = false; }
+  }
+  function textoContato() { return CFG.WHATSAPP || CFG.EMAIL ? ' Se precisar, fale conosco (veja o contato no fim da página).' : ''; }
+
+  /* ---------- Interface ---------- */
+  function mostrarErro(id, texto) {
+    var el = $('erro-' + id); if (el) el.textContent = texto || '';
+    var campo = $(id); if (campo && campo.tagName === 'INPUT') { if (texto) campo.setAttribute('aria-invalid', 'true'); else campo.removeAttribute('aria-invalid'); }
+  }
+  function limparErros() { ['nome', 'email', 'whatsapp', 'cnpj', 'grupo'].forEach(function (i) { mostrarErro(i, ''); }); }
+  function mensagemGeral(texto, tipo) { $('mensagem-geral').innerHTML = texto ? '<div class="caixa ' + (tipo || 'info') + '">' + texto + '</div>' : ''; }
+  function irParaEtapa(n) {
+    [1, 2, 3].forEach(function (i) {
+      $('etapa' + i).hidden = i !== n;
+      var p = $('p' + i);
+      p.classList.toggle('feito', i < n);
+      if (i === n) p.setAttribute('aria-current', 'step'); else p.removeAttribute('aria-current');
+    });
+    var titulo = $('t' + n); if (titulo) { titulo.focus({ preventScroll: true }); }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  function escapar(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+
+  /* ---------- Etapa 1: CNPJ ---------- */
+  function caixaCnpj(tipo, html) { $('resultado-cnpj').innerHTML = html ? '<div class="caixa ' + tipo + '">' + html + '</div>' : ''; }
+
+  function tratarCnpj() {
+    var campo = $('cnpj');
+    var pos = campo.selectionStart, antes = campo.value.slice(0, pos).replace(/[^A-Za-z0-9]/g, '').length;
+    var cru = limparCnpj(campo.value).substr(0, 14);
+    var formatado = mascaraCnpj(cru);
+    if (campo.value !== formatado) {
+      campo.value = formatado;
+      var nova = 0, vistos = 0;
+      while (nova < formatado.length && vistos < antes) { if (/[A-Z0-9]/.test(formatado.charAt(nova))) vistos++; nova++; }
+      try { campo.setSelectionRange(nova, nova); } catch (e) { /* alguns navegadores não deixam */ }
+    }
+    mostrarErro('cnpj', '');
+    tokenConsulta++;
+    estado.cnpj = { estado: 'vazio', confirmado: false, dados: null };
+    if (cru.length < 14) { caixaCnpj('', ''); return; }
+    if (!validarCnpj(cru)) {
+      estado.cnpj.estado = 'invalido';
+      caixaCnpj('erro', '<strong>Confira o CNPJ.</strong> Algum número parece diferente do correto.');
+      return;
+    }
+    consultarCnpj(cru);
+  }
+
+  function consultarCnpj(cru) {
+    var meu = ++tokenConsulta;
+    estado.cnpj.estado = 'consultando';
+    caixaCnpj('info', 'Conferindo o CNPJ na Receita Federal…');
+    chamar({ acao: 'cnpj', cnpj: cru }).then(function (r) {
+      if (meu !== tokenConsulta) return;               // a pessoa já mudou o número
+      if (!r || r.ok === false) { estado.cnpj.estado = 'indisponivel'; caixaCnpj('aviso', '<strong>Não conseguimos conferir agora.</strong> Você pode continuar; conferimos o CNPJ em seguida.'); return; }
+      if (r.valido === false) { estado.cnpj.estado = 'invalido'; caixaCnpj('erro', '<strong>Confira o CNPJ.</strong> Algum número parece diferente do correto.'); return; }
+      if (r.encontrado === false) {
+        estado.cnpj.estado = 'nao_encontrado';
+        caixaCnpj('erro', '<strong>Não encontramos este CNPJ na Receita Federal.</strong> Confira os números.' + textoContato());
+        return;
+      }
+      if (r.encontrado === null || r.indisponivel) {
+        estado.cnpj.estado = 'indisponivel';
+        caixaCnpj('aviso', '<strong>Não conseguimos consultar a Receita agora.</strong> Você pode continuar; conferimos o CNPJ em seguida.');
+        return;
+      }
+      estado.cnpj.estado = 'encontrado'; estado.cnpj.dados = r;
+      var nome = r.razaoSocial + (r.nomeFantasia && r.nomeFantasia !== r.razaoSocial ? ' (' + r.nomeFantasia + ')' : '');
+      var onde = [r.cidade, r.uf].filter(Boolean).join('/');
+      caixaCnpj('info', '<strong>Encontramos: ' + escapar(nome) + '</strong>' + (onde ? escapar(onde) : '') +
+        '<div class="acoes"><button type="button" class="principal pequeno" id="cnpj-sim">Sim, é esta</button><button type="button" class="pequeno" id="cnpj-nao">Não, corrigir</button></div>');
+      $('cnpj-sim').addEventListener('click', function () {
+        estado.cnpj.confirmado = true;
+        caixaCnpj('ok', '<strong>Empresa confirmada</strong>' + escapar(nome));
+        mostrarErro('cnpj', '');
+      });
+      $('cnpj-nao').addEventListener('click', function () {
+        $('cnpj').value = ''; tratarCnpj(); $('cnpj').focus();
+      });
+    }).catch(function () {
+      if (meu !== tokenConsulta) return;
+      estado.cnpj.estado = 'indisponivel';
+      caixaCnpj('aviso', '<strong>Não conseguimos conferir agora.</strong> Você pode continuar; conferimos o CNPJ em seguida.');
+    });
+  }
+
+  function cnpjLiberado() {
+    var e = estado.cnpj;
+    if (e.estado === 'encontrado') return e.confirmado;
+    return e.estado === 'indisponivel';
+  }
+
+  function validarEtapa1() {
+    limparErros();
+    var ok = true, primeiro = null;
+    function falha(id, msg) { mostrarErro(id, msg); ok = false; if (!primeiro) primeiro = id; }
+    if (($('nome').value || '').trim().length < 3) falha('nome', 'Informe o seu nome.');
+    if (!emailValido($('email').value)) falha('email', 'Confira o e-mail: ele precisa estar completo.');
+    if (!telefoneValido($('whatsapp').value)) falha('whatsapp', 'Informe o WhatsApp com DDD.');
+    var cru = limparCnpj($('cnpj').value);
+    if (cru.length < 14) falha('cnpj', 'Informe o CNPJ da empresa.');
+    else if (!validarCnpj(cru)) falha('cnpj', 'Confira o CNPJ: algum número parece diferente do correto.');
+    else if (estado.cnpj.estado === 'consultando') falha('cnpj', 'Aguarde a conferência do CNPJ.');
+    else if (estado.cnpj.estado === 'nao_encontrado') falha('cnpj', 'Não encontramos este CNPJ na Receita Federal.');
+    else if (!cnpjLiberado()) falha('cnpj', 'Confirme que esta é a sua empresa.');
+    if (!document.querySelector('input[name=grupo]:checked')) falha('grupo', 'Escolha uma opção.');
+    if (primeiro) { var alvo = $(primeiro) || document.querySelector('input[name=grupo]'); if (alvo) alvo.focus(); }
+    return ok;
+  }
+
+  /* ---------- Etapa 2: horários ---------- */
+  function carregarHorarios() {
+    var area = $('area-horarios');
+    area.innerHTML = '<div class="caixa info">Buscando os horários livres…</div>';
+    $('confirmar').disabled = true; estado.dia = null; estado.hora = null; $('resumo').hidden = true;
+    chamar({ acao: 'horarios' }).then(function (r) {
+      if (!r || r.ok === false) { area.innerHTML = '<div class="caixa erro">Não conseguimos buscar os horários agora. Tente de novo em instantes.' + escapar(textoContato()) + '</div>'; return; }
+      estado.dias = r.dias || [];
+      desenharDias();
+    }).catch(function () {
+      area.innerHTML = '<div class="caixa erro">Não conseguimos buscar os horários agora. Confira a conexão e tente de novo.' + escapar(textoContato()) + '</div>';
+    });
+  }
+
+  function desenharDias() {
+    var area = $('area-horarios');
+    if (!estado.dias.length) { area.innerHTML = '<div class="caixa aviso"><strong>Não há horários livres nos próximos dias.</strong>' + escapar(textoContato()) + '</div>'; return; }
+    var html = '<span class="rotulo" id="rot-dia">Dia</span><div class="dias" role="group" aria-labelledby="rot-dia">';
+    estado.dias.forEach(function (d) {
+      var p = partesData(d.data);
+      html += '<button type="button" data-dia="' + d.data + '" aria-pressed="false">' + SEMANA_CURTA[p.sem] + ' ' + p.dia + '/' + p.mes + '<small>' + d.horarios.length + (d.horarios.length === 1 ? ' horário' : ' horários') + '</small></button>';
+    });
+    html += '</div><div id="bloco-horas" hidden><span class="rotulo" id="rot-hora">Horário de início</span><div class="horas" role="group" aria-labelledby="rot-hora" id="horas"></div></div>';
+    area.innerHTML = html;
+    Array.prototype.forEach.call(area.querySelectorAll('[data-dia]'), function (b) {
+      b.addEventListener('click', function () { escolherDia(b.getAttribute('data-dia')); });
+    });
+  }
+
+  function escolherDia(data) {
+    estado.dia = data; estado.hora = null;
+    Array.prototype.forEach.call(document.querySelectorAll('[data-dia]'), function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-dia') === data ? 'true' : 'false'); });
+    var d = estado.dias.filter(function (x) { return x.data === data; })[0];
+    var horas = $('horas'); horas.innerHTML = '';
+    d.horarios.forEach(function (h) {
+      var b = document.createElement('button'); b.type = 'button'; b.setAttribute('data-hora', h); b.setAttribute('aria-pressed', 'false'); b.textContent = h;
+      b.addEventListener('click', function () { escolherHora(h); });
+      horas.appendChild(b);
+    });
+    $('bloco-horas').hidden = false; $('confirmar').disabled = true; $('resumo').hidden = true;
+  }
+
+  function escolherHora(h) {
+    estado.hora = h;
+    Array.prototype.forEach.call(document.querySelectorAll('[data-hora]'), function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-hora') === h ? 'true' : 'false'); });
+    $('resumo-texto').innerHTML = '<strong>' + escapar(dataLonga(estado.dia)) + ', às ' + escapar(h) + '</strong> (horário de Brasília), com duração de cerca de 2 horas.';
+    $('resumo').hidden = false; $('confirmar').disabled = false; $('erro-reserva').textContent = '';
+  }
+
+  function confirmar() {
+    if (estado.enviando || !estado.dia || !estado.hora) return;
+    estado.enviando = true; $('confirmar').disabled = true; $('confirmar').textContent = 'Confirmando…'; $('erro-reserva').textContent = '';
+    var pedido = {
+      nome: $('nome').value.trim(), email: $('email').value.trim(), whatsapp: $('whatsapp').value.trim(),
+      cnpj: limparCnpj($('cnpj').value), grupo: document.querySelector('input[name=grupo]:checked').value,
+      data: estado.dia, hora: estado.hora, empresa_site: $('empresa_site').value
+    };
+    chamar({ acao: 'reservar' }, pedido).then(function (r) {
+      estado.enviando = false; $('confirmar').textContent = 'Confirmar a nossa conversa';
+      if (r && r.ok) { sucesso(pedido, r); return; }
+      var codigo = r && r.codigo;
+      $('erro-reserva').textContent = (r && r.mensagem) || 'Não conseguimos concluir agora. Tente de novo em instantes.';
+      if (codigo === 'HORARIO_OCUPADO') { carregarHorarios(); }
+      else if (['CNPJ_INVALIDO', 'CNPJ_NAO_ENCONTRADO', 'NOME', 'EMAIL', 'WHATSAPP'].indexOf(codigo) >= 0) {
+        irParaEtapa(1);
+        var id = { CNPJ_INVALIDO: 'cnpj', CNPJ_NAO_ENCONTRADO: 'cnpj', NOME: 'nome', EMAIL: 'email', WHATSAPP: 'whatsapp' }[codigo];
+        mostrarErro(id, r.mensagem);
+      } else { $('confirmar').disabled = false; }
+    }).catch(function () {
+      estado.enviando = false; $('confirmar').textContent = 'Confirmar a nossa conversa'; $('confirmar').disabled = false;
+      $('erro-reserva').textContent = 'Não conseguimos concluir agora. Confira a conexão e tente de novo.' + textoContato();
+    });
+  }
+
+  function sucesso(pedido, r) {
+    $('ok-nome').textContent = pedido.nome.split(/\s+/)[0];
+    $('ok-quando').textContent = dataLonga(r.data || pedido.data) + ', às ' + (r.hora || pedido.hora);
+    $('ok-email').textContent = pedido.email;
+    mensagemGeral('');
+    irParaEtapa(3);
+  }
+
+  /* ---------- Ligações ---------- */
+  function iniciar() {
+    montarContato();
+    if (!apiPronta()) {
+      $('etapa1').hidden = true; $('passos').hidden = true;
+      mensagemGeral('<strong>O agendamento está sendo preparado.</strong> Volte em breve' + (CFG.EMAIL ? ' ou escreva para ' + escapar(CFG.EMAIL) : '') + '.', 'aviso');
+      return;
+    }
+    $('cnpj').addEventListener('input', tratarCnpj);
+    $('whatsapp').addEventListener('input', function () { var v = mascaraTelefone(this.value); if (v !== this.value) this.value = v; mostrarErro('whatsapp', ''); });
+    ['nome', 'email'].forEach(function (i) { $(i).addEventListener('input', function () { mostrarErro(i, ''); }); });
+    Array.prototype.forEach.call(document.querySelectorAll('input[name=grupo]'), function (r) { r.addEventListener('change', function () { mostrarErro('grupo', ''); }); });
+    $('form1').addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      if (!validarEtapa1()) return;
+      irParaEtapa(2);
+      carregarHorarios();
+    });
+    $('voltar').addEventListener('click', function () { irParaEtapa(1); });
+    $('confirmar').addEventListener('click', confirmar);
+  }
+
+  window.__lado = { limparCnpj: limparCnpj, validarCnpj: validarCnpj, mascaraCnpj: mascaraCnpj, mascaraTelefone: mascaraTelefone, telefoneValido: telefoneValido, emailValido: emailValido, dataLonga: dataLonga };
+  iniciar();
+})();
+</script>
+</body>
+</html>
