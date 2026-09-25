@@ -86,6 +86,7 @@
   .dias button[aria-pressed="true"] small { color: #d7deee; }
   .resumo { background: var(--creme); border: 1px solid var(--linha); border-radius: 10px; padding: 12px 14px; margin: 14px 0 0; }
   .resumo p { margin: 0; }
+  .opcional { font-weight: 400; color: var(--suave); }
   .aviso-dados { font-size: .85rem; color: var(--suave); margin: 14px 0 0; text-align: center; }
   .contato { font-size: .92rem; color: var(--suave); margin-top: 18px; text-align: center; }
   .contato a { color: var(--azul); font-weight: 600; }
@@ -161,6 +162,11 @@
         </div>
         <p class="erro" id="erro-grupo" role="alert"></p>
       </div>
+      <div class="campo">
+        <label for="local">Onde prefere que a conversa aconteça? <span class="opcional">(opcional)</span></label>
+        <input type="text" id="local" name="local" maxlength="200" autocomplete="street-address" placeholder="Endereço da empresa, ou &quot;online&quot;">
+        <p class="ajuda">Se ficar em branco, confirmamos pelo WhatsApp.</p>
+      </div>
       <div class="oculto-robo" aria-hidden="true">
         <label for="empresa_site">Deixe este campo em branco</label>
         <input type="text" id="empresa_site" name="empresa_site" tabindex="-1" autocomplete="off">
@@ -180,7 +186,7 @@
       <button type="button" id="voltar">Voltar</button>
       <button type="button" class="principal" id="confirmar" disabled>Confirmar a nossa conversa</button>
     </div>
-    <p class="aviso-dados">Usamos estes dados só para confirmar a reunião e manter contato.</p>
+    <p class="aviso-dados">Usamos estes dados só para confirmar a reunião e manter contato. Para não perdermos nada do que você contar, a conversa tem o áudio gravado, só para uso interno da Assessoria.</p>
   </section>
 
   <!-- Etapa 3 -->
@@ -437,7 +443,7 @@
     estado.enviando = true; $('confirmar').disabled = true; $('confirmar').textContent = 'Confirmando…'; $('erro-reserva').textContent = '';
     var pedido = {
       nome: $('nome').value.trim(), email: $('email').value.trim(), whatsapp: $('whatsapp').value.trim(),
-      cnpj: limparCnpj($('cnpj').value), grupo: document.querySelector('input[name=grupo]:checked').value,
+      cnpj: limparCnpj($('cnpj').value), grupo: document.querySelector('input[name=grupo]:checked').value, local: $('local').value.trim(),
       data: estado.dia, hora: estado.hora, empresa_site: $('empresa_site').value
     };
     chamar({ acao: 'reservar' }, pedido).then(function (r) {
