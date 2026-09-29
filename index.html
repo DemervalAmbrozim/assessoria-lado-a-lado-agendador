@@ -53,7 +53,7 @@
     .linha2 .campo { margin-bottom: 14px; }
   }
   label, .rotulo { display: block; font-weight: 600; margin-bottom: 6px; color: var(--azul); }
-  input[type=text], input[type=email], input[type=tel] {
+  input[type=text], input[type=email], input[type=tel], textarea {
     width: 100%; font: inherit; color: var(--texto); background: #fff; border: 1.5px solid #b9b39c; border-radius: 10px; padding: 12px 14px; min-height: 48px;
   }
   input:focus-visible, button:focus-visible { outline: 3px solid var(--dourado); outline-offset: 2px; }
@@ -167,6 +167,11 @@
         <input type="text" id="local" name="local" maxlength="200" autocomplete="street-address" placeholder="Endereço da empresa, ou &quot;online&quot;">
         <p class="ajuda">Se ficar em branco, confirmamos pelo WhatsApp.</p>
       </div>
+      <div class="campo">
+        <label for="desafio">Se você se sentir à vontade, conte pelo menos um desafio em que gostaria da nossa ajuda <span class="opcional">(opcional)</span></label>
+        <textarea id="desafio" name="desafio" maxlength="1000" rows="4" placeholder="Ex.: o caixa aperta todo fim de mês, mesmo faturando bem."></textarea>
+        <p class="ajuda">É só para chegarmos à conversa já pensando na sua realidade. Fica em sigilo.</p>
+      </div>
       <div class="oculto-robo" aria-hidden="true">
         <label for="empresa_site">Deixe este campo em branco</label>
         <input type="text" id="empresa_site" name="empresa_site" tabindex="-1" autocomplete="off">
@@ -261,6 +266,12 @@
 
   /* ---------- Conversa com o script ---------- */
   function apiPronta() { return CFG.API && !/COLE_AQUI/.test(CFG.API); }
+  // v6 (29/09/2026): o carrossel abre o agendador com ?frente=financeiro (ou outra lâmina) e o campo do desafio já vem com a frente escrita
+  var FRENTES = { financeiro: 'Financeiro', administrativo: 'Administrativo', gestao: 'Gestão e planejamento', operacao: 'Operação e processos', governanca: 'Governança e controles' };
+  var FRENTE = FRENTES[new URLSearchParams(location.search).get('frente')] || '';
+  function preencherFrente() { var d = document.getElementById('desafio'); if (FRENTE && d && !d.value) d.value = FRENTE + ': '; }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', preencherFrente); else preencherFrente();
+
   function chamar(params, corpo) {
     var url = CFG.API + (CFG.API.indexOf('?') < 0 ? '?' : '&') + new URLSearchParams(params).toString();
     var ctrl = new AbortController();
@@ -443,7 +454,7 @@
     estado.enviando = true; $('confirmar').disabled = true; $('confirmar').textContent = 'Confirmando…'; $('erro-reserva').textContent = '';
     var pedido = {
       nome: $('nome').value.trim(), email: $('email').value.trim(), whatsapp: $('whatsapp').value.trim(),
-      cnpj: limparCnpj($('cnpj').value), grupo: document.querySelector('input[name=grupo]:checked').value, local: $('local').value.trim(),
+      cnpj: limparCnpj($('cnpj').value), grupo: document.querySelector('input[name=grupo]:checked').value, local: $('local').value.trim(), desafio: $('desafio').value.trim(), frente: FRENTE,
       data: estado.dia, hora: estado.hora, empresa_site: $('empresa_site').value
     };
     chamar({ acao: 'reservar' }, pedido).then(function (r) {
