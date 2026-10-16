@@ -509,5 +509,9 @@
   iniciar();
 })();
 </script>
+<script>
+// Contador de visitas (sem cookie e sem dado pessoal): aba Visitas da planilha.
+try { fetch(window.LADO_A_LADO.API + '?acao=visita&p=agendador', { mode: 'no-cors' }); } catch (e) {}
+</script>
 </body>
 </html>
