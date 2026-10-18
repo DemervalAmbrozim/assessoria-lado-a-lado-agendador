@@ -97,6 +97,11 @@
   [hidden] { display: none !important; }
   @media (prefers-reduced-motion: no-preference) { button { transition: background .15s, color .15s; } }
 </style>
+<!-- Pixel da Meta (conjunto "Lado a Lado Agendador", 18/10) -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','1151237000630686');fbq('track','PageView');
+</script>
 </head>
 <body>
 <header class="topo">
@@ -482,6 +487,7 @@
     $('ok-email').textContent = pedido.email;
     mensagemGeral('');
     irParaEtapa(3);
+    try { fbq('track', 'Schedule'); } catch (e) {}
   }
 
   /* ---------- Ligações ---------- */
