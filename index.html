@@ -122,7 +122,7 @@ fbq('init','1126314690089337');fbq('track','PageView');
   <noscript><div class="caixa aviso">Esta página precisa do JavaScript ligado para funcionar. Se preferir, fale conosco por e-mail.</div></noscript>
 
   <ol class="passos" id="passos" aria-label="Etapas">
-    <li id="p1" aria-current="step">1. A sua empresa</li>
+    <li id="p1" aria-current="step">1. Seu contato</li>
     <li id="p2">2. Dia e horário</li>
     <li id="p3">3. Confirmado</li>
   </ol>
@@ -131,8 +131,8 @@ fbq('init','1126314690089337');fbq('track','PageView');
 
   <!-- Etapa 1 -->
   <section class="cartao" id="etapa1" aria-labelledby="t1">
-    <h2 id="t1" tabindex="-1">Sobre você e a sua empresa</h2>
-    <p class="sub">Leva menos de um minuto.</p>
+    <h2 id="t1" tabindex="-1">Seu contato</h2>
+    <p class="sub">Só o nome e o WhatsApp. O resto conversamos pessoalmente.</p>
     <form id="form1" novalidate autocomplete="on">
       <div class="linha2">
         <div class="campo">
@@ -141,48 +141,27 @@ fbq('init','1126314690089337');fbq('track','PageView');
           <p class="erro" id="erro-nome" role="alert"></p>
         </div>
         <div class="campo">
-          <label for="email">E-mail</label>
-          <input type="email" id="email" name="email" autocomplete="email" inputmode="email" required aria-describedby="erro-email">
-          <p class="erro" id="erro-email" role="alert"></p>
-        </div>
-      </div>
-      <div class="linha2">
-        <div class="campo">
           <label for="whatsapp">WhatsApp (com DDD)</label>
           <input type="tel" id="whatsapp" name="whatsapp" autocomplete="tel-national" inputmode="tel" placeholder="(27) 99999-0000" required aria-describedby="erro-whatsapp">
           <p class="erro" id="erro-whatsapp" role="alert"></p>
         </div>
+      </div>
+      <div class="linha2">
         <div class="campo">
-          <label for="cnpj">CNPJ da empresa</label>
-          <input type="text" id="cnpj" name="cnpj" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="00.000.000/0000-00" maxlength="18" required aria-describedby="ajuda-cnpj resultado-cnpj">
-          <p class="ajuda" id="ajuda-cnpj">Conferimos o número na hora, na Receita Federal.</p>
-          <div id="resultado-cnpj" aria-live="polite"></div>
-          <p class="erro" id="erro-cnpj" role="alert"></p>
+          <label for="empresa">Empresa <span class="opcional">(opcional)</span></label>
+          <input type="text" id="empresa" name="empresa" maxlength="120" autocomplete="organization">
         </div>
-      </div>
-      <div class="campo" role="radiogroup" aria-labelledby="rot-grupo" aria-describedby="erro-grupo">
-        <span class="rotulo" id="rot-grupo">Há outras empresas do mesmo grupo?</span>
-        <div class="opcoes">
-          <label><input type="radio" name="grupo" value="Sim"> Sim</label>
-          <label><input type="radio" name="grupo" value="Não"> Não</label>
+        <div class="campo">
+          <label for="email">E-mail <span class="opcional">(opcional)</span></label>
+          <input type="email" id="email" name="email" autocomplete="email" inputmode="email" aria-describedby="erro-email">
+          <p class="erro" id="erro-email" role="alert"></p>
         </div>
-        <p class="erro" id="erro-grupo" role="alert"></p>
-      </div>
-      <div class="campo">
-        <label for="local">Onde prefere que a conversa aconteça? <span class="opcional">(opcional)</span></label>
-        <input type="text" id="local" name="local" maxlength="200" autocomplete="street-address" placeholder="Endereço da empresa, ou &quot;online&quot;">
-        <p class="ajuda">Se ficar em branco, confirmamos pelo WhatsApp.</p>
-      </div>
-      <div class="campo">
-        <label for="desafio">Se você se sentir à vontade, conte pelo menos um desafio em que gostaria da nossa ajuda <span class="opcional">(opcional)</span></label>
-        <textarea id="desafio" name="desafio" maxlength="1000" rows="4" placeholder="Ex.: o caixa aperta todo fim de mês, mesmo faturando bem."></textarea>
-        <p class="ajuda">É só para chegarmos à conversa já pensando na sua realidade. Fica em sigilo.</p>
       </div>
       <div class="oculto-robo" aria-hidden="true">
         <label for="empresa_site">Deixe este campo em branco</label>
         <input type="text" id="empresa_site" name="empresa_site" tabindex="-1" autocomplete="off">
       </div>
-      <div class="barra"><button type="submit" class="principal" id="continuar">Continuar</button></div>
+      <div class="barra"><button type="submit" class="principal" id="continuar">Ver horários</button></div>
     </form>
   </section>
 
@@ -206,7 +185,7 @@ fbq('init','1126314690089337');fbq('track','PageView');
     <h2 id="t3" tabindex="-1">Tudo certo, <span id="ok-nome"></span>!</h2>
     <p class="quando" id="ok-quando"></p>
     <p>De preferência, vamos até você. Combinamos o local e os detalhes pelo WhatsApp. Assim a gente se conhece e descobre juntos como caminhar lado a lado.</p>
-    <p class="sub">Enviamos a confirmação para <strong id="ok-email"></strong>. Se não a encontrar, olhe também a caixa de spam.</p>
+    <p class="sub" id="ok-confirma"></p>
     <p class="sub"><a href="https://www.linkedin.com/company/assessorialadoalado/" target="_blank" rel="noopener">Seguir no LinkedIn</a> · <a href="https://www.instagram.com/assessorialadoalado/" target="_blank" rel="noopener">Seguir no Instagram</a></p>
   </section>
 
@@ -394,15 +373,8 @@ fbq('init','1126314690089337');fbq('track','PageView');
     var ok = true, primeiro = null;
     function falha(id, msg) { mostrarErro(id, msg); ok = false; if (!primeiro) primeiro = id; }
     if (($('nome').value || '').trim().length < 3) falha('nome', 'Informe o seu nome.');
-    if (!emailValido($('email').value)) falha('email', 'Confira o e-mail: ele precisa estar completo.');
+    if ($('email').value.trim() && !emailValido($('email').value)) falha('email', 'Confira o e-mail: ele precisa estar completo.');
     if (!telefoneValido($('whatsapp').value)) falha('whatsapp', 'Informe o WhatsApp com DDD.');
-    var cru = limparCnpj($('cnpj').value);
-    if (cru.length < 14) falha('cnpj', 'Informe o CNPJ da empresa.');
-    else if (!validarCnpj(cru)) falha('cnpj', 'Confira o CNPJ: algum número parece diferente do correto.');
-    else if (estado.cnpj.estado === 'consultando') falha('cnpj', 'Aguarde a conferência do CNPJ.');
-    else if (estado.cnpj.estado === 'nao_encontrado') falha('cnpj', 'Não encontramos este CNPJ na Receita Federal.');
-    else if (!cnpjLiberado()) falha('cnpj', 'Confirme que esta é a sua empresa.');
-    if (!document.querySelector('input[name=grupo]:checked')) falha('grupo', 'Escolha uma opção.');
     if (primeiro) { var alvo = $(primeiro) || document.querySelector('input[name=grupo]'); if (alvo) alvo.focus(); }
     return ok;
   }
@@ -461,7 +433,7 @@ fbq('init','1126314690089337');fbq('track','PageView');
     estado.enviando = true; $('confirmar').disabled = true; $('confirmar').textContent = 'Confirmando…'; $('erro-reserva').textContent = '';
     var pedido = {
       nome: $('nome').value.trim(), email: $('email').value.trim(), whatsapp: $('whatsapp').value.trim(),
-      cnpj: limparCnpj($('cnpj').value), grupo: document.querySelector('input[name=grupo]:checked').value, local: $('local').value.trim(), desafio: $('desafio').value.trim(), frente: FRENTE,
+      empresa: $('empresa').value.trim(), frente: FRENTE,
       data: estado.dia, hora: estado.hora, empresa_site: $('empresa_site').value
     };
     chamar({ acao: 'reservar' }, pedido).then(function (r) {
@@ -484,10 +456,22 @@ fbq('init','1126314690089337');fbq('track','PageView');
   function sucesso(pedido, r) {
     $('ok-nome').textContent = pedido.nome.split(/\s+/)[0];
     $('ok-quando').textContent = dataLonga(r.data || pedido.data) + ', às ' + (r.hora || pedido.hora);
-    $('ok-email').textContent = pedido.email;
+    $('ok-confirma').textContent = pedido.email
+      ? 'Enviamos a confirmação para ' + pedido.email + ' e também falamos com você pelo WhatsApp. Se o e-mail não chegar, olhe a caixa de spam.'
+      : 'Vamos confirmar com você pelo WhatsApp.';
     mensagemGeral('');
     irParaEtapa(3);
     try { fbq('track', 'Schedule'); } catch (e) {}
+  }
+
+  /* Salva o contato antes do horário (v9): quem desistir na escolha do horário ainda fica registrado. Uma vez por nome + WhatsApp. */
+  var contatoSalvo = '';
+  function salvarContato() {
+    var c = { nome: $('nome').value.trim(), whatsapp: $('whatsapp').value.trim(), email: $('email').value.trim(), empresa: $('empresa').value.trim(), frente: FRENTE, empresa_site: $('empresa_site').value };
+    var chave = c.nome + '|' + c.whatsapp;
+    if (chave === contatoSalvo) return;
+    contatoSalvo = chave;
+    chamar({ acao: 'contato' }, c).catch(function () { /* não atrapalha o agendamento */ });
   }
 
   /* ---------- Ligações ---------- */
@@ -498,13 +482,12 @@ fbq('init','1126314690089337');fbq('track','PageView');
       mensagemGeral('<strong>O agendamento está sendo preparado.</strong> Volte em breve' + (CFG.EMAIL ? ' ou escreva para ' + escapar(CFG.EMAIL) : '') + '.', 'aviso');
       return;
     }
-    $('cnpj').addEventListener('input', tratarCnpj);
     $('whatsapp').addEventListener('input', function () { var v = mascaraTelefone(this.value); if (v !== this.value) this.value = v; mostrarErro('whatsapp', ''); });
     ['nome', 'email'].forEach(function (i) { $(i).addEventListener('input', function () { mostrarErro(i, ''); }); });
-    Array.prototype.forEach.call(document.querySelectorAll('input[name=grupo]'), function (r) { r.addEventListener('change', function () { mostrarErro('grupo', ''); }); });
     $('form1').addEventListener('submit', function (ev) {
       ev.preventDefault();
       if (!validarEtapa1()) return;
+      salvarContato();
       irParaEtapa(2);
       carregarHorarios();
     });
